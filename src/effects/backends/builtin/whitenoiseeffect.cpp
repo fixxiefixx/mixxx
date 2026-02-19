@@ -71,7 +71,7 @@ void WhiteNoiseEffect::processChannel(
             gs.previous_drywet, drywet, engineParameters.samplesPerBuffer());
 
     // Generate white noise
-    std::uniform_real_distribution<> r_distributor(0.0, 1.0);
+    std::uniform_real_distribution<> r_distributor(-1.0, 1.0);
     const auto bufferSize = engineParameters.samplesPerBuffer();
     for (unsigned int i = 0; i < bufferSize; ++i) {
         float noise = static_cast<float>(r_distributor(gs.gen));
