@@ -19,7 +19,7 @@ class WhiteNoiseGroupState final : public EffectState {
               m_noiseBuffer(bufferParameters.samplesPerBuffer()),
               m_filteredBuffer(bufferParameters.samplesPerBuffer()) {
     }
-
+    
     CSAMPLE_GAIN previous_drywet;
     std::random_device rs;
     std::mt19937 gen;
@@ -53,6 +53,7 @@ class WhiteNoiseEffect : public EffectProcessorImpl<WhiteNoiseGroupState> {
   private:
     EngineEffectParameterPointer m_pDryWetParameter;
     EngineEffectParameterPointer m_pGainParameter;
+    EngineEffectParameterPointer m_pFilterParameter;
 
     DISALLOW_COPY_AND_ASSIGN(WhiteNoiseEffect);
 };
