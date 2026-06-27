@@ -15,8 +15,7 @@ class WhiteNoiseGroupState final : public EffectState {
               previous_gain(0.0f),
               previous_q(0.707106781),
               gen(rs()),
-              m_highpass(bufferParameters.sampleRate(), 20.0, 0.707, false),
-              m_lowpass(bufferParameters.sampleRate(), 20000.0, 0.707, false),
+              m_bandpass(bufferParameters.sampleRate(), 20.0, 0.707),
               m_noiseBuffer(bufferParameters.samplesPerBuffer()),
               m_filteredBuffer(bufferParameters.samplesPerBuffer()) {
     }
@@ -26,8 +25,7 @@ class WhiteNoiseGroupState final : public EffectState {
     std::random_device rs;
     std::mt19937 gen;
 
-    EngineFilterBiquad1High m_highpass;
-    EngineFilterBiquad1Low m_lowpass;
+    EngineFilterBiquad1Band m_bandpass;
 
     mixxx::SampleBuffer m_noiseBuffer;
     mixxx::SampleBuffer m_filteredBuffer;

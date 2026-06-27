@@ -143,28 +143,25 @@ void WhiteNoiseEffect::processChannel(
             gs.m_noiseBuffer[i] = noise;
         }
 
-        double hp_center_freq = kMinFreq;
-        double lp_center_freq = kMaxFreq;
+        double bp_center_freq = kMinFreq;
 
         if (drywet < 0.5) {
-            hp_center_freq = frequency_interpolation.parameterToValue(drywet * 2.0);
+            bp_center_freq = frequency_interpolation.parameterToValue(drywet * 2.0);
         } else {
-            lp_center_freq = frequency_interpolation.parameterToValue((drywet - 0.5) * 2.0);
+            bp_center_freq = frequency_interpolation.parameterToValue((drywet - 0.5) * 2.0);
         }
 
-        gs.m_highpass.setFrequencyCorners(engineParameters.sampleRate(), hp_center_freq, q);
-        gs.m_lowpass.setFrequencyCorners(engineParameters.sampleRate(), lp_center_freq, q);
+        gs.m_bandpass.setFrequencyCorners(engineParameters.sampleRate(), bp_center_freq, q);
 
         // Apply high-pass and low-pass filtering to the noise
-        gs.m_highpass.process(gs.m_noiseBuffer.data(), gs.m_filteredBuffer.data(), bufferSize);
-        gs.m_lowpass.process(gs.m_filteredBuffer.data(), gs.m_filteredBuffer.data(), bufferSize);
+        gs.m_bandpass.process(gs.m_noiseBuffer.data(), gs.m_filteredBuffer.data(), bufferSize);
 
         // Mix dry and wet signals, apply gain and ramp the dry/wet effect
         for (unsigned int i = 0; i < bufferSize; ++i) {
             CSAMPLE_GAIN gain_ramped = gain_ramping_value.getNth(i);
 
             // Apply gain to the output signal
-            pOutput[i] = (pInput[i] * (1 - gain_ramped) +
+            pOutput[i] = (pInput[i] +
                     gs.m_filteredBuffer[i] * gain_ramped);
         }
     } else {
