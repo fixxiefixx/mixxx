@@ -40,6 +40,7 @@ class CmdlineArgs final {
         return m_controllerAbortOnWarning;
     }
     bool getDeveloper() const { return m_developer; }
+    bool getShowLoopbackDevice() const { return m_show_loopback_device; }
 #ifdef MIXXX_USE_QML
     bool isQml() const {
         return m_qml;
@@ -96,6 +97,7 @@ class CmdlineArgs final {
     bool m_controllerDebug;
     bool m_controllerAbortOnWarning; // Controller Engine will be stricter
     bool m_developer; // Developer Mode
+    bool m_show_loopback_device; // Shows the loopback midi device
 #ifdef MIXXX_USE_QML
     bool m_qml;
 #endif

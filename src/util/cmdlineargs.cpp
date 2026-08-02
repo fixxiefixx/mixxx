@@ -53,6 +53,7 @@ CmdlineArgs::CmdlineArgs()
           m_controllerDebug(false),
           m_controllerAbortOnWarning(false),
           m_developer(false),
+          m_show_loopback_device(false),
 #ifdef MIXXX_USE_QML
           m_qml(false),
 #endif
@@ -272,6 +273,12 @@ bool CmdlineArgs::parse(const QStringList& arguments, CmdlineArgs::ParseMode mod
                             : QString());
     parser.addOption(developer);
 
+    const QCommandLineOption show_loopback_device(QStringLiteral("show_loopback_device"),
+            forUserFeedback ? QCoreApplication::translate("CmdlineArgs",
+                                      "Shows the loopback midi device otherwise hidden under controllers")
+                            : QString());
+    parser.addOption(show_loopback_device);
+
 #ifdef MIXXX_USE_QML
     const QCommandLineOption qml(QStringLiteral("qml"),
             forUserFeedback ? QCoreApplication::translate("CmdlineArgs",
@@ -439,6 +446,7 @@ bool CmdlineArgs::parse(const QStringList& arguments, CmdlineArgs::ParseMode mod
     m_controllerDebug = parser.isSet(controllerDebug) || parser.isSet(controllerDebugDeprecated);
     m_controllerAbortOnWarning = parser.isSet(controllerAbortOnWarning);
     m_developer = parser.isSet(developer);
+    m_show_loopback_device = parser.isSet(show_loopback_device);
 #ifdef MIXXX_USE_QML
     m_qml = parser.isSet(qml);
 #endif
